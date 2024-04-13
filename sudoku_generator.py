@@ -215,7 +215,20 @@ class SudokuGenerator:
 	Return: None
     '''
     def remove_cells(self):
-        pass
+        counter = 0
+        for i in range(self.row_length):
+            for j in range(self.row_length):
+                if self.board[i][j] == 0:
+                    pass
+                elif self.is_valid(i,j,self.board[i][j]):
+                    pass
+                else:
+                    self.board[i][j] = 0
+                    counter += 1
+                    if counter == self.removed_cells:
+                        return
+                    
+
 
 '''
 DO NOT CHANGE
