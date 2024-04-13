@@ -22,7 +22,7 @@ class SudokuGenerator:
 	Return:
 	None
     '''
-    def __init__(self, row_length, removed_cells):
+    def __init__(self, row_length, removed_cells): #this is a test comment
         self.row_length = row_length
         self.removed_cells = removed_cells
         self.board = [
