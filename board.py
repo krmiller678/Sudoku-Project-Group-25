@@ -1,14 +1,16 @@
 import pygame
 from constants import *
 from cell import Cell
+from sudoku_generator import SudokuGenerator
 
 class Board:
-    def __init__(self, rows, cols, width, height, screen):
+    def __init__(self, rows, cols, width, height, screen,removed_cells):
         self.rows = rows
         self.cols = cols
         self.width = width
         self.height = height
         self.screen = screen
+        self.removed_cells = removed_cells
         self.board = self.initialize_board()
         self.cells = [[Cell(self.board[i][j], i, j, self.height//self.rows,
                             self.width//self.cols) for j in range(cols)] for i in range(rows)]
@@ -27,8 +29,7 @@ class Board:
             for j, col in enumerate(row):
                 print(self.board[i][j], end=" ")
             print()
-
-    def draw(self,screen):
+    def draw(self):
         # draw lines
         for i in range(1, 9):
             if i % 3 == 0:

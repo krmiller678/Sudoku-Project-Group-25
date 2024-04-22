@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Tic Tac Toe")
+    pygame.display.set_caption("Sudoku")
 
     draw_game_start(screen)  # Calls function to draw start screen
 
@@ -109,11 +109,11 @@ if __name__ == '__main__':
     #draw_lines()
     # middle_cell = Cell('o', 1, 1, 200, 200)
     # middle_cell.draw(screen)
-    board = Board(9, 9, WIDTH, HEIGHT, screen)
+    board = Board(9, 9, WIDTH, HEIGHT, screen,20)
     # board.print_board()
     board.draw()
 
-
+    
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -155,6 +155,7 @@ if __name__ == '__main__':
                     draw_game_start(screen)
                     screen.fill(BG_COLOR)
                     board.draw()
+    
         # game is over
         if game_over:
             pygame.display.update()
@@ -162,4 +163,4 @@ if __name__ == '__main__':
             draw_game_over(screen)
 
         pygame.display.update()
-
+    
