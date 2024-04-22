@@ -1,4 +1,7 @@
 import math,random
+import pygame
+from constants import *
+from cell import Cell
 
 """
 This was adapted from a GeeksforGeeks article "Program for Sudoku Generator" by Aarti_Rathi and Ankur Trisal
@@ -25,13 +28,9 @@ class SudokuGenerator:
     def __init__(self, row_length, removed_cells): #this is a test comment
         self.row_length = row_length
         self.removed_cells = removed_cells
-        self.board = [
-            [0 for i in range(row_length)]
-            for j in range(row_length)
-        ]
+        self.board = 0
         
         self.box_length = int(math.sqrt(row_length))
-
     '''
 	Returns a 2D python list of numbers which represents the board
 
@@ -40,6 +39,30 @@ class SudokuGenerator:
     '''
     def get_board(self):
         return self.board
+
+    """Displays the screen"""
+    def draw(self,screen):
+        # draw lines
+        for i in range(1, 9):
+            if i % 3 == 0:
+                pygame.draw.line(screen, LINE_COLOR, (0, SQUARE_SIZE * i),
+                             (WIDTH, SQUARE_SIZE * i), LARGE_LINE_WIDTH)
+            else:
+                pygame.draw.line(screen, LINE_COLOR, (0, SQUARE_SIZE * i),
+                             (WIDTH, SQUARE_SIZE * i), LINE_WIDTH)
+        # draw vertical lines
+        for i in range(1, 9):
+            if i % 3 == 0:
+                pygame.draw.line(screen, LINE_COLOR, (SQUARE_SIZE * i, 0),
+                             (SQUARE_SIZE * i, HEIGHT), LARGE_LINE_WIDTH)
+            else:
+                pygame.draw.line(screen, LINE_COLOR, (SQUARE_SIZE * i, 0),
+                             (SQUARE_SIZE * i, HEIGHT), LINE_WIDTH)
+            
+
+        for i in range(self.rows):
+            for j in range(self.cols):
+                self.cells[i][j].draw(self.screen)
 
     '''
 	Displays the board to the console

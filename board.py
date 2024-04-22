@@ -28,7 +28,7 @@ class Board:
                 print(self.board[i][j], end=" ")
             print()
 
-    def draw(self):
+    def draw(self,screen):
         # draw lines
         for i in range(1, 9):
             if i % 3 == 0:
