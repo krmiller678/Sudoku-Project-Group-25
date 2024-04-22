@@ -114,8 +114,8 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def is_valid(self, row, col, num):
-        row_start = row // self.box_length
-        col_start = col // self.box_length
+        row_start = row // self.box_length * self.box_length
+        col_start = col // self.box_length * self.box_length
         if self.valid_in_box(row_start, col_start, num) and self.valid_in_col(col,num) and self.valid_in_row(row,num):
             return True
         else:
@@ -216,17 +216,12 @@ class SudokuGenerator:
     '''
     def remove_cells(self):
         counter = 0
-        for i in range(self.row_length):
-            for j in range(self.row_length):
-                if self.board[i][j] == 0:
-                    pass
-                elif self.is_valid(i,j,self.board[i][j]):
-                    pass
-                else:
-                    self.board[i][j] = 0
-                    counter += 1
-                    if counter == self.removed_cells:
-                        return
+        while counter < self.removed_cells:
+            i = random.randint(0,self.row_length-1)
+            j = random.randint(0,self.row_length-1)
+            if self.board[i][j] != 0:
+                self.board[i][j] = 0
+                counter += 1
                     
 
 
