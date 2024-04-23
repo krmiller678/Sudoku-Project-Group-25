@@ -281,7 +281,6 @@ if __name__ == "__main__":
     pygame.display.set_caption("Sudoku")
     screen.fill(BG_COLOR)
     
-    chicken_dinner(screen)
     winner = startup(screen)
     if winner == False:
         loser(screen)
