@@ -55,7 +55,7 @@ def startup(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if easy_rectangle.collidepoint(event.pos):
                     #difficulty = 30
-                    winner = game_in_progress(screen,1)
+                    winner = game_in_progress(screen,30)
                     return winner
                 elif medium_rectangle.collidepoint(event.pos):
                     # difficulty = 40
