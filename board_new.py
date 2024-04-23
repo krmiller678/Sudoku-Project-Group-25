@@ -48,25 +48,33 @@ class Board:
 
     def select(self, row, col):
         self.cells[row][col].selected = True
-        while self.cells[row][col].selected == True:
-            pass
+        self.cells[row][col].draw()
+        return self.cells[row][col]
 
     def click(self,x,y):
         row = x // SQUARE_SIZE
         col = y // SQUARE_SIZE
         if row < 9 and col < 9:
-            return (row,col)
+            return (int(row),int(col))
         else:
             return None
     
-    def clear(self):
-        pass
+    def clear(self, target):
+        #needs to take a cell object as an input
+        target.set_cell_value(0)
+        target.set_sketched_value(0)
+        target.draw()
 
-    def sketch(self,value):
-        pass
+    def sketch(self,target,value):
+        #needs to take a cell object as an input
+        target.set_sketched_value(value)
+        target.draw()
 
-    def place_number(self,value):
-        pass
+
+    def place_number(self,target,value):
+        #needs to take a cell object as an input
+        target.set_cell_value(value)
+        target.draw()
 
     def reset_to_original(self):
         for i in range(9):
@@ -76,7 +84,12 @@ class Board:
                     self.cells[i][j].draw()
 
     def is_full(self):
-        pass
+        #sweeps the whole board looking for real value == 0
+        for i in range(9):
+            for j in range(9):
+                if self.cells[i][j].value == 0:
+                    return False
+        return True
 
     def update_board(self):
         pass
@@ -85,10 +98,11 @@ class Board:
         pass
 
     def check_board(self):
-        pass
-
-    
-
-
-    
-    
+        #implements our SudokuGenerator to access is_valid method
+        self.board_new = SudokuGenerator(9,0)
+        self.board_new.board = [[self.cells[i][j].value for j in range(9)] for i in range(9)]
+        for i in range(9):
+            for j in range(9):
+                if not self.board_new.is_valid(i,j,self.board_new.board[i][j]):
+                    return False
+        return True
