@@ -68,12 +68,14 @@ class Board:
     def sketch(self,target,value):
         #needs to take a cell object as an input
         target.set_sketched_value(value)
+        #print(target.sketched_value)
         target.draw()
 
 
     def place_number(self,target,value):
         #needs to take a cell object as an input
         target.set_cell_value(value)
+        #print(target.value)
         target.draw()
 
     def reset_to_original(self):
@@ -92,8 +94,31 @@ class Board:
         return True
 
     def update_board(self):
-        pass
-
+        #redraw board
+        pygame.draw.rect(self.screen,BG_COLOR,pygame.Rect(0,0,WIDTH,WIDTH))
+        for i in range(1, 9):
+            #draw rows
+            if i % 3 == 0:
+                pygame.draw.line(self.screen, LINE_COLOR, (0, SQUARE_SIZE * i),
+                             (WIDTH, SQUARE_SIZE * i), LARGE_LINE_WIDTH)
+            else:
+                pygame.draw.line(self.screen, LINE_COLOR, (0, SQUARE_SIZE * i),
+                             (WIDTH, SQUARE_SIZE * i), LINE_WIDTH)
+                
+        for i in range(1, 9):
+        #draw cols
+            if i % 3 == 0:
+                pygame.draw.line(self.screen, LINE_COLOR, (SQUARE_SIZE * i, 0),
+                            (SQUARE_SIZE * i, WIDTH), LARGE_LINE_WIDTH)
+            else:
+                pygame.draw.line(self.screen, LINE_COLOR, (SQUARE_SIZE * i, 0),
+                            (SQUARE_SIZE * i, WIDTH), LINE_WIDTH)
+                
+        for i in range(9):
+            for j in range(9):
+                self.cells[i][j].draw()
+        
+                
     def find_empty(self):
         pass
 

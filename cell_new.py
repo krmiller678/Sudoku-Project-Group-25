@@ -36,7 +36,7 @@ class Cell:
             self.screen.blit(integer_surf, integer_rect)
         #adding in some more useful conditionals:
         elif self.sketched_value != 0:
-            integer = str(self.value)
+            integer = str(self.sketched_value)
             integer_surf = integer_font.render(integer, 0, SKETCHED_NUMBER_COLOR)
             integer_rect = integer_surf.get_rect(
                     center=(SQUARE_SIZE * self.row + SQUARE_SIZE/2, SQUARE_SIZE * self.col + SQUARE_SIZE/2))

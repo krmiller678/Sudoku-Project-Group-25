@@ -7,7 +7,69 @@ import pygame,sys
 from cell_new import Cell
 from board_new import Board
 
-def game_in_progress(screen):
+def startup(screen):
+    #setup fonts
+    title_font = pygame.font.Font(None,70)
+
+    #fill in background
+    screen.fill(BG_COLOR)
+
+    #setup buttons
+    easy_text = title_font.render("EASY", 0, (255, 255, 255))
+    medium_text = title_font.render("MEDIUM", 0, (255, 255, 255))
+    hard_text = title_font.render("HARD", 0, (255, 255, 255))
+
+    #initialize button background color and text
+    easy_surface = pygame.Surface((easy_text.get_size()[0] + 20, easy_text.get_size()[1] + 10))
+    easy_surface.fill(LINE_COLOR)
+    easy_surface.blit(easy_text, (10,10))
+
+    medium_surface = pygame.Surface((medium_text.get_size()[0] + 20, medium_text.get_size()[1] + 10))
+    medium_surface.fill(LINE_COLOR)
+    medium_surface.blit(medium_text, (10,10))
+
+    hard_surface = pygame.Surface((hard_text.get_size()[0] + 20, hard_text.get_size()[1] + 10))
+    hard_surface.fill(LINE_COLOR)
+    hard_surface.blit(hard_text, (10,10))
+
+    #initialize button rectangle
+    hard_rectangle = hard_surface.get_rect(
+        center=(WIDTH // 2, 660))
+    medium_rectangle = medium_surface.get_rect(
+        center=(WIDTH // 2, 440))
+    easy_rectangle = easy_surface.get_rect(
+        center=(WIDTH//2 , 220))
+    
+    #draw buttons
+    screen.blit(easy_surface, easy_rectangle)
+    screen.blit(medium_surface, medium_rectangle)
+    screen.blit(hard_surface, hard_rectangle)
+
+    #set up in game loop to select buttons
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+            # Mouse button handler
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if easy_rectangle.collidepoint(event.pos):
+                    #difficulty = 30
+                    winner = game_in_progress(screen,30)
+                    return winner
+                elif medium_rectangle.collidepoint(event.pos):
+                    # difficulty = 40
+                    winner = game_in_progress(screen,40)
+                    return winner
+                elif hard_rectangle.collidepoint(event.pos):
+                    # difficulty = 50
+                    winner = game_in_progress(screen,50)
+                    return winner
+                
+        pygame.display.update()
+
+
+def game_in_progress(screen,difficulty=30):
     """
     This function takes as inputs the board difficulty as well as the screen surface
     to initialize the starting point for the game. Event loop included at bottom allows 
@@ -51,7 +113,7 @@ def game_in_progress(screen):
     screen.blit(exit_surface, exit_rectangle)
 
     #draw board
-    board = Board(WIDTH, HEIGHT, screen, 30)
+    board = Board(WIDTH, HEIGHT, screen, difficulty)
     board.draw()
 
     #sets default target
@@ -69,7 +131,7 @@ def game_in_progress(screen):
                     board.reset_to_original()
                 elif restart_rectangle.collidepoint(event.pos):
                     # If the mouse button is on restart, return to main menu
-                    game_in_progress(screen)
+                    startup(screen)
                 elif exit_rectangle.collidepoint(event.pos):
                     # If the mouse is on the exit button, exit the program
                     sys.exit()
@@ -102,7 +164,7 @@ def game_in_progress(screen):
                 elif event.key == pygame.K_9:
                     board.sketch(target,9)
                 elif event.key == pygame.K_RETURN:
-                    board.place_number(target,1)
+                    board.place_number(target,target.sketched_value)
                 elif event.key == pygame.K_BACKSPACE:
                     board.clear(target)
             
@@ -110,7 +172,106 @@ def game_in_progress(screen):
 
                     
 
+        board.update_board()
+        pygame.display.update()
+        if board.is_full():
+            return board.check_board()
 
+
+def loser(screen):
+    #setup fonts
+    title_font = pygame.font.Font(None,70)
+
+    #fill in background
+    screen.fill(BG_COLOR)
+
+    #setup buttons
+    you_lost_text = title_font.render("Game Over :(", 0, (255, 255, 255))
+    restart_text = title_font.render("RESTART", 0, (255, 255, 255))
+    
+    #initialize button background color and text
+    you_lost_surface = pygame.Surface((you_lost_text.get_size()[0] + 20, you_lost_text.get_size()[1] + 10))
+    you_lost_surface.fill(LINE_COLOR)
+    you_lost_surface.blit(you_lost_text, (10,10))
+
+    restart_surface = pygame.Surface((restart_text.get_size()[0] + 20, restart_text.get_size()[1] + 10))
+    restart_surface.fill(LINE_COLOR)
+    restart_surface.blit(restart_text, (10,10))
+
+
+    #initialize button rectangle
+    you_lost_rectangle = you_lost_surface.get_rect(
+        center=(WIDTH // 2, 220))
+    restart_rectangle = restart_surface.get_rect(
+        center=(WIDTH // 2, 440))
+    
+    #draw buttons
+    screen.blit(you_lost_surface, you_lost_rectangle)
+    screen.blit(restart_surface, restart_rectangle)
+
+
+    #set up in game loop to select buttons
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+            # Mouse button handler
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if you_lost_rectangle.collidepoint(event.pos):
+                    print("Better luck next time!")
+                elif restart_rectangle.collidepoint(event.pos):
+                    # If the mouse button is on restart, return to main menu
+                    startup(screen)
+                
+        pygame.display.update()
+
+
+def chicken_dinner(screen):
+    #setup fonts
+    title_font = pygame.font.Font(None,70)
+
+    #fill in background
+    screen.fill(BG_COLOR)
+
+    #setup buttons
+    you_won_text = title_font.render("Game Won!", 0, (255, 255, 255))
+    exit_text = title_font.render("EXIT", 0, (255, 255, 255))
+    
+    #initialize button background color and text
+    you_won_surface = pygame.Surface((you_won_text.get_size()[0] + 20, you_won_text.get_size()[1] + 10))
+    you_won_surface.fill(LINE_COLOR)
+    you_won_surface.blit(you_won_text, (10,10))
+
+    exit_surface = pygame.Surface((exit_text.get_size()[0] + 20, exit_text.get_size()[1] + 10))
+    exit_surface.fill(LINE_COLOR)
+    exit_surface.blit(exit_text, (10,10))
+
+
+    #initialize button rectangle
+    you_won_rectangle = you_won_surface.get_rect(
+        center=(WIDTH // 2, 220))
+    exit_rectangle = exit_surface.get_rect(
+        center=(WIDTH // 2, 440))
+    
+    #draw buttons
+    screen.blit(you_won_surface, you_won_rectangle)
+    screen.blit(exit_surface, exit_rectangle)
+
+
+    #set up in game loop to select buttons
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+            # Mouse button handler
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if you_won_rectangle.collidepoint(event.pos):
+                    print("Great job!")
+                elif exit_rectangle.collidepoint(event.pos):
+                    sys.exit()
+                
         pygame.display.update()
 
 
@@ -120,7 +281,14 @@ if __name__ == "__main__":
     pygame.display.set_caption("Sudoku")
     screen.fill(BG_COLOR)
     
-    game_in_progress(screen)
+    chicken_dinner(screen)
+    winner = startup(screen)
+    if winner == False:
+        loser(screen)
+    else:
+        chicken_dinner(screen)
+    
+
 
 
     while True:
