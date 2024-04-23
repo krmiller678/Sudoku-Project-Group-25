@@ -128,6 +128,8 @@ class Board:
         self.board_new.board = [[self.cells[i][j].value for j in range(9)] for i in range(9)]
         for i in range(9):
             for j in range(9):
-                if not self.board_new.is_valid(i,j,self.board_new.board[i][j]):
+                self.board_new.board[i][j] = 0
+                if not self.board_new.is_valid(i,j,self.cells[i][j].value):
                     return False
+                self.board_new.board[i][j] = self.cells[i][j].value
         return True
