@@ -1,3 +1,11 @@
+# Known issues to fix in future versions:
+NEED TO:
+- Add in arrow key functionality
+- Remove hidden ability to overwrite squares
+- Add in feature for selected function to highlight red immutable squares
+- Tighten up some class invocations (code is a bit confusing to read in some places)
+- Fix recursive issue between in progress and startup function calls
+
 # Project 4 Milestone 1 Template
 This is the first part to your Project 4 set of assignments. This is an independent assignment which will make sure you have learned how to:
 - **Clone** a Github repository
